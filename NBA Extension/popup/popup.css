@@ -1,0 +1,46 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+  }
+  
+  .match-score-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .team {
+    display: flex;
+    align-items: center;
+  }
+  
+  .team-logo {
+    width: 40px;
+    height: 40px;
+    margin-right: 8px;
+  }
+  
+  .team-name {
+    font-weight: bold;
+    margin-right: 4px;
+  }
+  
+  .team-score {
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .separator {
+    margin: 0 16px;
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+main {
+    display: flex;
+    
+}
