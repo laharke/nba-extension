@@ -1,9 +1,10 @@
 
-const apiUrl = "https://www.balldontlie.io/api/v1/games?dates[]=2024-01-18";
+const apiUrl = "https://www.balldontlie.io/api/v1/games?dates[]=";
 document.addEventListener('DOMContentLoaded', function () {
-   
+      
+    
       // Make a simple GET request to a sample API
-      fetch(apiUrl)
+      fetch(apiUrl+getDate())
         .then(response => response.json())
         .then(data => {
           console.log('Fetch successful:', data);
@@ -17,23 +18,23 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function generarPartido(partido) {
- 
-  var partidoContainer = document.createElement('div');
+  //Div del partido
+  let partidoContainer = document.createElement('div');
   partidoContainer.className = 'match-score-container';
   console.log(partido+"hola");
-
-  var equipo1 = document.createElement('div');
+  //div del equipo local cambiar nombre de variable dsp
+  let equipo1 = document.createElement('div');
   equipo1.className = 'team';
 
-  var logoEquipo1 = document.createElement('img');
+  let logoEquipo1 = document.createElement('img');
   logoEquipo1.src = `../images/${partido.home_team.full_name.replace(/ /g, "")}.png`;
   logoEquipo1.className = 'team-logo';
 
-  var nombreEquipo1 = document.createElement('span');
+  let nombreEquipo1 = document.createElement('span');
   nombreEquipo1.className = 'team-name';
   nombreEquipo1.textContent = partido.home_team.full_name;
 
-  var scoreEquipo1 = document.createElement('span');
+  let scoreEquipo1 = document.createElement('span');
   scoreEquipo1.className = 'team-score';
   scoreEquipo1.textContent = partido.home_team_score;
 
@@ -42,22 +43,22 @@ function generarPartido(partido) {
   equipo1.appendChild(nombreEquipo1);
   equipo1.appendChild(scoreEquipo1);
 
-  var separator = document.createElement('div');
+  let separator = document.createElement('div');
   separator.className = 'separator';
   separator.textContent = '-';
 
-  var equipo2 = document.createElement('div');
+  let equipo2 = document.createElement('div');
   equipo2.className = 'team';
 
-  var scoreEquipo2 = document.createElement('span');
+  let scoreEquipo2 = document.createElement('span');
   scoreEquipo2.className = 'team-score';
   scoreEquipo2.textContent = partido.visitor_team_score; 
 
-  var nombreEquipo2 = document.createElement('span');
+  let nombreEquipo2 = document.createElement('span');
   nombreEquipo2.className = 'team-name';
   nombreEquipo2.textContent = partido.visitor_team.full_name; 
 
-  var logoEquipo2 = document.createElement('img');
+  let logoEquipo2 = document.createElement('img');
   logoEquipo2.src = `../images/${partido.visitor_team.full_name.replace(/ /g, "")}.png`;
   logoEquipo2.alt = 'Team 2 Logo';
   logoEquipo2.className = 'team-logo';
@@ -72,10 +73,20 @@ function generarPartido(partido) {
   partidoContainer.appendChild(equipo2);
 
 
-  var body = document.getElementById('main-container');
+  let body = document.getElementById('main-container');
   body.appendChild(partidoContainer);
 }
 
+
+function getDate(){
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+
+  return`${year}-${month}-${day}`;
+
+}
 
 // partidos = api call
 //for each partidos...
