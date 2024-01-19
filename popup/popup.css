@@ -4,8 +4,13 @@ body {
     align-items: center;
     justify-content: center;
     height: 100vh;
-    background-color: #f4f4f4;
+    background: #2777b057;
+    min-width: 450px;
   }
+#fechas{
+  display: flex;
+  justify-content: space-between;
+}
   
   .match-score-container {
     display: flex;
