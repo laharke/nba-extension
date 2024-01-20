@@ -3,14 +3,25 @@ const apiUrl = "https://www.balldontlie.io/api/v1/games?dates[]=";
 document.addEventListener('DOMContentLoaded', function () {
       
     
-      // Make a simple GET request to a sample API
-    loadGames();
+    let date = getDate()
+    loadGames(date);
 });
 
+//Deberiamos hacer un for each a todos los botones pero ahora agarro uno para TEST
+document.querySelector('#yesterday').addEventListener('click', (element) => {
+  console.log(element)
+  console.log(document.querySelector("#yesterday").dataset.fecha)
+  ;
+  document.getElementById('main-container').innerHTML = ''
+  loadGames(document.querySelector("#yesterday").dataset.fecha)
+})
 
 //Cargo todos los games
-function loadGames(){
-  fetch(apiUrl+getDate())
+//A load games hay que darle un arubmento que es la DATE HAY QUE REFACTORIZAR ESTO
+//Y la funcion que appendea vamos a tener que hacer que borre los partidos viejos. osea que antes de appendar limpie el HTML
+
+function loadGames(date){
+  fetch(apiUrl+date)
     .then(response => response.json())
     .then(data => {
       console.log('Fetch successful:', data);
@@ -27,7 +38,7 @@ function generarPartido(partido) {
 
   let body = document.getElementById('main-container');
   body.appendChild(generarPartidoPrueba(partido));
-  //Separator entre partidos?
+  //Separator entre partidos? No se puede agr
   let hrDivisor = document.createElement('hr');
   body.appendChild(hrDivisor);
 }
@@ -78,6 +89,11 @@ function getDate(){
   document.querySelector('#yesterday').innerHTML = yesterday;
   document.querySelector('#today').innerHTML = `${year}-${month}-${day}`;
   document.querySelector('#tomorrow').innerHTML = tomorrow;
+
+  //Hago lo mimso de arriba pero les agrego un DATa-set nuevo a lso elment
+  document.querySelector('#yesterday').setAttribute('data-fecha', yesterday);
+  document.querySelector('#today').setAttribute('data-fecha', `${year}-${month}-${day}`);
+  document.querySelector('#tomorrow').setAttribute('data-fecha', tomorrow);
 
   return `${year}-${month}-${day}`;
 }
