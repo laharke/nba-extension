@@ -4,91 +4,56 @@ document.addEventListener('DOMContentLoaded', function () {
       
     
       // Make a simple GET request to a sample API
-      fetch(apiUrl+getDate())
-        .then(response => response.json())
-        .then(data => {
-          console.log('Fetch successful:', data);
-          for (const partido of data.data) {
-            generarPartido(partido);
-          }
-          
-          // You can do more with the fetched data here
-        })
-        .catch(error => console.error('Fetch error:', error));
+    loadGames();
 });
 
+
+//Cargo todos los games
+function loadGames(){
+  fetch(apiUrl+getDate())
+    .then(response => response.json())
+    .then(data => {
+      console.log('Fetch successful:', data);
+      for (const partido of data.data) {
+        generarPartido(partido);
+      }
+      
+      // You can do more with the fetched data here
+    })
+    .catch(error => console.error('Fetch error:', error));
+}
+
 function generarPartido(partido) {
-  //Div del partido
-  let partidoContainer = document.createElement('div');
-  partidoContainer.className = 'match-score-container';
-
-  
-  //Div del equipo local cambiar nombre de variable dsp
-  let equipo1 = document.createElement('div');
-  equipo1.className = 'team';
-
-  let logoEquipo1 = document.createElement('img');
-  logoEquipo1.src = `../images/${partido.home_team.full_name.replace(/ /g, "")}.png`;
-  logoEquipo1.className = 'team-logo';
-  console.log(partido.home_team.full_name.split(" ").join("").toLowerCase())
-  console.log(partido.home_team.full_name.replace(/ /g, ""))
-
-  let nombreEquipo1 = document.createElement('span');
-  nombreEquipo1.className = 'team-name';
-  nombreEquipo1.textContent = partido.home_team.full_name;
-
-  let scoreEquipo1 = document.createElement('span');
-  scoreEquipo1.className = 'team-score';
-  scoreEquipo1.textContent = partido.home_team_score;
-
-  equipo1.appendChild(logoEquipo1);
-  equipo1.appendChild(nombreEquipo1);
-  equipo1.appendChild(scoreEquipo1);
-
-  //Separator
-  let separator = document.createElement('div');
-  separator.className = 'separator';
-  separator.textContent = '-';
-
-
-  //Div del equipo visitante cambiar nombre de variable dsp
-  let equipo2 = document.createElement('div');
-  equipo2.className = 'team';
-
-  let scoreEquipo2 = document.createElement('span');
-  scoreEquipo2.className = 'team-score';
-  scoreEquipo2.textContent = partido.visitor_team_score; 
-
-  let nombreEquipo2 = document.createElement('span');
-  nombreEquipo2.className = 'team-name';
-  nombreEquipo2.textContent = partido.visitor_team.full_name; 
-
-  let logoEquipo2 = document.createElement('img');
-  logoEquipo2.src = `../images/${partido.visitor_team.full_name.replace(/ /g, "")}.png`;
-  logoEquipo2.alt = 'Team 2 Logo';
-  logoEquipo2.className = 'team-logo';
-  console.log(partido.visitor_team.full_name.replace(/ /g, ""))
-
-  equipo2.appendChild(scoreEquipo2);
-  equipo2.appendChild(nombreEquipo2);
-  equipo2.appendChild(logoEquipo2);
-
-
-  partidoContainer.appendChild(equipo1);
-  partidoContainer.appendChild(separator);
-  partidoContainer.appendChild(equipo2);
-
-
-
 
   let body = document.getElementById('main-container');
-  body.appendChild(partidoContainer);
+  body.appendChild(generarPartidoPrueba(partido));
   //Separator entre partidos?
   let hrDivisor = document.createElement('hr');
   body.appendChild(hrDivisor);
 }
 
-
+//Genero el template cada partido
+function generarPartidoPrueba(partido) {
+  const homeTeamName = partido.home_team.full_name;
+  const visitorTeamName = partido.visitor_team.full_name;
+  const template = document.createElement('div'); // Este es mi div padre 
+  template.className = 'match-score-container';
+  const contenidoPartido = `
+      <div class="team">
+        <img src="../images/${homeTeamName.replace(/ /g, "")}.png" class="team-logo">
+        <span class="team-name">${homeTeamName}</span>
+        <span class="team-score">${partido.home_team_score}</span>
+      </div>
+      <div class="separator">-</div>
+      <div class="team">
+        <span class="team-score">${partido.visitor_team_score}</span>
+        <span class="team-name">${visitorTeamName}</span>
+        <img src="../images/${visitorTeamName.replace(/ /g, "")}.png" alt="Team 2 Logo" class="team-logo">
+      </div>
+  `;
+  template.innerHTML = contenidoPartido; // A mi template le agrego el contenido del partido
+  return template
+}
 function getDate(){
   const date = new Date();
   const year = date.getFullYear();
@@ -114,8 +79,7 @@ function getDate(){
   document.querySelector('#today').innerHTML = `${year}-${month}-${day}`;
   document.querySelector('#tomorrow').innerHTML = tomorrow;
 
-  return`${year}-${month}-${day}`;
-
+  return `${year}-${month}-${day}`;
 }
 
 function formatDate(date){
