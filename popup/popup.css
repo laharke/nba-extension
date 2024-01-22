@@ -3,7 +3,7 @@ body {
     margin: 0;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    height: auto;
     background: #2777b057;
     min-width: 450px;
   }
