@@ -31,13 +31,11 @@ function loadGames(date){
     .then(data => {
       //Borramos la pelota de basket (spinner)
       document.querySelector('.basketball').style.display = 'none';
-      //Loopeamos y vamos generando cada partido
       //Vamos creando cada template de cada partido
       for (const partido of data.data) {
         generarPartido(partido);
       }
       
-      // You can do more with the fetched data here
     })
     .catch(error => console.error('Fetch error:', error));
 }
@@ -55,7 +53,7 @@ function generarPartido(partido) {
 
 //Genero el template cada partido.
 //Retorna el div con todo el contenido del game
-//Devuelve un string HTML con el Home - vs - Away.
+//Devuelve un DIV HTML con el Home - vs - Away.
 function generarTemplatePartido(partido) {
   const homeTeamName = partido.home_team.full_name;
   const visitorTeamName = partido.visitor_team.full_name;
