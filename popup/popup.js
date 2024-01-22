@@ -45,6 +45,7 @@ function loadGames(date){
 //Funcion que genera el partido y su divisor y lo appendea al div de partidos.
 function generarPartido(partido) {
 
+  //Cada partido lo appendeamos a main-container
   let body = document.getElementById('main-container');
   body.appendChild(generarTemplatePartido(partido));
   //Separator entre entre los partidos
@@ -59,7 +60,7 @@ function generarTemplatePartido(partido) {
   const homeTeamName = partido.home_team.full_name;
   const visitorTeamName = partido.visitor_team.full_name;
   const template = document.createElement('div');
-  template.className = 'match-score-container';
+  template.className = 'match-score-container'; 
   const contenidoPartido = `
       <div class="team">
         <img src="../images/${homeTeamName.replace(/ /g, "")}.png" class="team-logo">
