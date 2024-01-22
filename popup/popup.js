@@ -1,39 +1,38 @@
-
 //Api Url
 const apiUrl = "https://www.balldontlie.io/api/v1/games?dates[]=";
-
 
 
 //Funcion ON LOAD
 document.addEventListener('DOMContentLoaded', function () {
       
-    
+    //Obtenemos dia de hoy
     let date = getDate()
     //Llamamos a loadGames, funcion main()
     loadGames(date);
 });
 
 //Loopear todos los botones.
-//Deberiamos hacer un for each a todos los botones pero ahora agarro uno para TEST
-document.querySelector('#yesterday').addEventListener('click', (element) => {
-  console.log(element)
-  console.log(document.querySelector("#yesterday").dataset.fecha)
-  ;
-  //Borro partidos viejos
-  
-  loadGames(document.querySelector("#yesterday").dataset.fecha)
+const buttons = document.querySelectorAll('.botonFecha').forEach(element => {
+  element.addEventListener('click', () => {
+      //Vaciamos container de los partidos
+      document.getElementById('main-container').innerHTML = ''
+      //Mostramos la pelota de basket (spinner)
+      document.querySelector('.basketball').style.display = 'block';
+      loadGames(element.dataset.fecha)
+  })
 })
 
-//Cargo todos los games
-//A load games hay que darle un arubmento que es la DATE HAY QUE REFACTORIZAR ESTO
-//Y la funcion que appendea vamos a tener que hacer que borre los partidos viejos. osea que antes de appendar limpie el HTML
 
+
+//Funcion que carga los partidos, recibe como parametro una fecha
 function loadGames(date){
   fetch(apiUrl+date)
     .then(response => response.json())
     .then(data => {
-      console.log('Fetch successful:', data);
-      document.getElementById('main-container').innerHTML = ''
+      //Borramos la pelota de basket (spinner)
+      document.querySelector('.basketball').style.display = 'none';
+      //Loopeamos y vamos generando cada partido
+      //Vamos creando cada template de cada partido
       for (const partido of data.data) {
         generarPartido(partido);
       }
@@ -43,6 +42,7 @@ function loadGames(date){
     .catch(error => console.error('Fetch error:', error));
 }
 
+//Funcion que genera el partido y su divisor y lo appendea al div de partidos.
 function generarPartido(partido) {
 
   let body = document.getElementById('main-container');
@@ -53,11 +53,12 @@ function generarPartido(partido) {
 }
 
 //Genero el template cada partido.
+//Retorna el div con todo el contenido del game
 //Devuelve un string HTML con el Home - vs - Away.
 function generarTemplatePartido(partido) {
   const homeTeamName = partido.home_team.full_name;
   const visitorTeamName = partido.visitor_team.full_name;
-  const template = document.createElement('div'); // Este es mi div padre 
+  const template = document.createElement('div');
   template.className = 'match-score-container';
   const contenidoPartido = `
       <div class="team">
@@ -82,20 +83,21 @@ function getDate(){
 
   let currentDate = new Date();
   let today;
+  //Get dia ayer formateado
   let yesterday = new Date(currentDate);
   yesterday.setDate(yesterday.getDate() - 1);
 
-  //Tomorrow date
+  //Get dia mañana formateado
   let tomorrow = new Date(currentDate);
   tomorrow.setDate(tomorrow.getDate() + 1);
 
-
+  
   today = formatDate(currentDate);
   yesterday = formatDate(yesterday);
   tomorrow = formatDate(tomorrow);
 
  
-  //Hago lo mimso de arriba pero les agrego un DATa-set nuevo a lso elment
+  //Set los data attributes con la Fecha correspondiente
   document.querySelector('#yesterday').setAttribute('data-fecha', yesterday);
   document.querySelector('#today').setAttribute('data-fecha', today);
   document.querySelector('#tomorrow').setAttribute('data-fecha', tomorrow);
