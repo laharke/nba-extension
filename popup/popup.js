@@ -1,18 +1,26 @@
 
+//Api Url
 const apiUrl = "https://www.balldontlie.io/api/v1/games?dates[]=";
+
+
+
+//Funcion ON LOAD
 document.addEventListener('DOMContentLoaded', function () {
       
     
     let date = getDate()
+    //Llamamos a loadGames, funcion main()
     loadGames(date);
 });
 
+//Loopear todos los botones.
 //Deberiamos hacer un for each a todos los botones pero ahora agarro uno para TEST
 document.querySelector('#yesterday').addEventListener('click', (element) => {
   console.log(element)
   console.log(document.querySelector("#yesterday").dataset.fecha)
   ;
-  document.getElementById('main-container').innerHTML = ''
+  //Borro partidos viejos
+  
   loadGames(document.querySelector("#yesterday").dataset.fecha)
 })
 
@@ -25,6 +33,7 @@ function loadGames(date){
     .then(response => response.json())
     .then(data => {
       console.log('Fetch successful:', data);
+      document.getElementById('main-container').innerHTML = ''
       for (const partido of data.data) {
         generarPartido(partido);
       }
@@ -37,14 +46,15 @@ function loadGames(date){
 function generarPartido(partido) {
 
   let body = document.getElementById('main-container');
-  body.appendChild(generarPartidoPrueba(partido));
-  //Separator entre partidos? No se puede agr
+  body.appendChild(generarTemplatePartido(partido));
+  //Separator entre entre los partidos
   let hrDivisor = document.createElement('hr');
   body.appendChild(hrDivisor);
 }
 
-//Genero el template cada partido
-function generarPartidoPrueba(partido) {
+//Genero el template cada partido.
+//Devuelve un string HTML con el Home - vs - Away.
+function generarTemplatePartido(partido) {
   const homeTeamName = partido.home_team.full_name;
   const visitorTeamName = partido.visitor_team.full_name;
   const template = document.createElement('div'); // Este es mi div padre 
@@ -65,44 +75,39 @@ function generarPartidoPrueba(partido) {
   template.innerHTML = contenidoPartido; // A mi template le agrego el contenido del partido
   return template
 }
-function getDate(){
-  const date = new Date();
-  const year = date.getFullYear();
-  const month = String(date.getMonth() + 1).padStart(2, '0');
-  const day = String(date.getDate()).padStart(2, '0');
 
-  //Titulo lo pogno ACA por ahora dsp lo acomodamos para ver cuando se llama, tiene sentido aca pero re mala pracitca dale let.
-  //Aparte vamos a tener que ponerle un DATA attribute a los botones de ayer hoy y mañana para pegarle a la api, va no, por ahi con new date agarramos el dia de ayer?
-  let currentDate = new Date() 
-  // Instantiate another object (based on the current), so we won't mutate the currentDate object
-  let yesterday = new Date(currentDate)
-  yesterday.setDate(yesterday.getDate() - 1)
+
+
+function getDate(){
+
+  let currentDate = new Date();
+  let today;
+  let yesterday = new Date(currentDate);
+  yesterday.setDate(yesterday.getDate() - 1);
 
   //Tomorrow date
-  let tomorrow = new Date(currentDate)
-  tomorrow.setDate(tomorrow.getDate() + 1)
+  let tomorrow = new Date(currentDate);
+  tomorrow.setDate(tomorrow.getDate() + 1);
 
 
-  yesterday = formatDate(yesterday)
-  tomorrow = formatDate(tomorrow)
+  today = formatDate(currentDate);
+  yesterday = formatDate(yesterday);
+  tomorrow = formatDate(tomorrow);
 
-  document.querySelector('#yesterday').innerHTML = yesterday;
-  document.querySelector('#today').innerHTML = `${year}-${month}-${day}`;
-  document.querySelector('#tomorrow').innerHTML = tomorrow;
-
+ 
   //Hago lo mimso de arriba pero les agrego un DATa-set nuevo a lso elment
   document.querySelector('#yesterday').setAttribute('data-fecha', yesterday);
-  document.querySelector('#today').setAttribute('data-fecha', `${year}-${month}-${day}`);
+  document.querySelector('#today').setAttribute('data-fecha', today);
   document.querySelector('#tomorrow').setAttribute('data-fecha', tomorrow);
 
-  return `${year}-${month}-${day}`;
+  return today;
 }
 
 function formatDate(date){
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
   const day = String(date.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`
+  return `${year}-${month}-${day}`;
 }
 
 
