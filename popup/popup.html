@@ -1,42 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-  <link rel="stylesheet" href="popup.css">
-  <script type="module" defer src="popup.js"></script>
-  <title>Match Score</title>
-</head>
-<body>
-  
-<nav>
-  <div id="fechas">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="popup.css" />
+    <script type="module" defer src="popup.js"></script>
+    <title>Match Score</title>
+  </head>
+  <body>
+    <nav class="navbar navbar-dark bg-dark">
+      <div class="d-flex justify-content-around w-100">
+        <button id="yesterday" type="button" class="botonFecha btn btn-outline-light">Ayer</button>
+        <button id="today" type="button" class="botonFecha btn btn-outline-light">Hoy</button>
+        <button id="tomorrow" type="button" class="botonFecha btn btn-outline-light">Mañana</button>
+      </div>
+    </nav>
     
-    <button id="yesterday" type="button" class="botonFecha btn btn-outline-light">Ayer</button>
- 
-    <button id="today" type="button" class="botonFecha btn btn-outline-light">Hoy</button>
+    
+    <hr />
 
-    <button id="tomorrow" type="button" class="botonFecha btn btn-outline-light">Mañana</button>
+    <div class="container mt-3">
+      <div class="basketball" style="display: block">
+        <div class="ball">
+          <div class="lines"></div>
+        </div>
+        <div class="shadow"></div>
+      </div>
 
-  </div>
-</nav>
-<hr>
-
-<div class="basketball">
-  <div class="ball">
-  <div class="lines"></div>
-  </div>
-  <div class="shadow"></div>
-</div>
-
-
-<main id="main-container">
-
-  
-
-</main>
-
-
-</body>
+      <main id="main-container" ></main>
+    </div>
+  </body>
 </html>

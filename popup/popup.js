@@ -57,24 +57,35 @@ function generarPartido(partido) {
 function generarTemplatePartido(partido) {
   const homeTeamName = partido.home_team.full_name;
   const visitorTeamName = partido.visitor_team.full_name;
+
+  // Crear el contenedor principal con la clase match-score-container y align-items-center
   const template = document.createElement('div');
-  template.className = 'match-score-container'; 
+  template.className = 'match-score-container align-items-center';
+
+  // Crear el contenido HTML del partido
   const contenidoPartido = `
-      <div class="team">
-        <img src="../images/${homeTeamName.replace(/ /g, "")}.png" class="team-logo">
-        <span class="team-name">${homeTeamName}</span>
-        <span class="team-score">${partido.home_team_score}</span>
-      </div>
-      <div class="separator">-</div>
-      <div class="team">
-        <span class="team-score">${partido.visitor_team_score}</span>
-        <span class="team-name">${visitorTeamName}</span>
-        <img src="../images/${visitorTeamName.replace(/ /g, "")}.png" alt="Team 2 Logo" class="team-logo">
-      </div>
+    <div class="team">
+      <img src="../images/${homeTeamName.replace(/ /g, "")}.png" class="team-logo">
+      <span class="team-name">${homeTeamName}</span>
+      <span class="team-score">${partido.home_team_score}</span>
+    </div>
+    <div class="separator"> -</div>
+    <div class="team team-second">
+      <span class="team-score">${partido.visitor_team_score}</span>
+      <span class="team-name">${visitorTeamName}</span>
+      <img src="../images/${visitorTeamName.replace(/ /g, "")}.png" alt="Team 2 Logo" class="team-logo">
+    </div>
   `;
-  template.innerHTML = contenidoPartido; // A mi template le agrego el contenido del partido
-  return template
+
+  // Agregar el contenido al contenedor principal
+  template.innerHTML = contenidoPartido;
+
+  // Devolver el contenedor principal
+  return template;
 }
+
+
+
 
 
 
