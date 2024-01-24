@@ -33,6 +33,7 @@ function loadGames(date){
       document.querySelector('.basketball').style.display = 'none';
       //Vamos creando cada template de cada partido
       for (const partido of data.data) {
+        console.log(data.data);
         generarPartido(partido);
       }
       
@@ -61,15 +62,25 @@ function generarTemplatePartido(partido) {
   // Crear el contenedor principal con la clase match-score-container y align-items-center
   const template = document.createElement('div');
   template.className = 'match-score-container align-items-center';
-
   // Crear el contenido HTML del partido
+  let horaArgentina = new Date(partido.date).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'America/Argentina/Buenos_Aires' }).replace(/^[0:]*/, '');
+  
   const contenidoPartido = `
     <div class="team">
       <img src="../images/${homeTeamName.replace(/ /g, "")}.png" class="team-logo">
       <span class="team-name">${homeTeamName}</span>
       <span class="team-score">${partido.home_team_score}</span>
     </div>
-    <div class="separator"> -</div>
+    
+    <div class="separator">
+    <div class="hora">${partido.time  === null ? horaArgentina: partido.time}</div>
+            <div class="" style=" 
+            justify-items: center;
+            flex-wrap: wrap;
+            align-content: center;
+            text-align: center;
+        ">-</div>
+    </div>
     <div class="team team-second">
       <span class="team-score">${partido.visitor_team_score}</span>
       <span class="team-name">${visitorTeamName}</span>
