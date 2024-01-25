@@ -1,6 +1,6 @@
 //Api Url
 const apiUrl = "https://www.balldontlie.io/api/v1/games?dates[]=";
-
+const apiEspn = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/"
 
 //Funcion ON LOAD
 document.addEventListener('DOMContentLoaded', function () {
@@ -18,7 +18,7 @@ const buttons = document.querySelectorAll('.botonFecha').forEach(element => {
       document.getElementById('main-container').innerHTML = ''
       //Mostramos la pelota de basket (spinner)
       document.querySelector('.basketball').style.display = 'block';
-      loadGames(element.dataset.fecha)
+      loadGames(element.dataset.fecha);
   })
 })
 
@@ -39,6 +39,32 @@ function loadGames(date){
       
     })
     .catch(error => console.error('Fetch error:', error));
+}
+
+//Funcion que carga los HORARIOS DE LOS PARTIDOS, recibe un equipo
+// Endpoint para obtener los horarios de los partidos de la NBA
+const endpoint = 'https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard';
+
+// Hacer la solicitud a la API
+
+function loadSchedule(team){
+  fetch(`${endpoint}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+  .then(response => response.json())
+  .then(data => {
+    // Acceder a la información de los partidos
+    const partidos = data.events;
+    
+    
+    // Procesar la información de los partidos según tus necesidades
+    console.log(partidos);
+  })
+  .catch(error => console.error('Error al obtener los horarios de la NBA:', error));
+  
 }
 
 //Funcion que genera el partido y su divisor y lo appendea al div de partidos.
@@ -64,7 +90,7 @@ function generarTemplatePartido(partido) {
   template.className = 'match-score-container align-items-center';
   // Crear el contenido HTML del partido
   let horaArgentina = new Date(partido.date).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'America/Argentina/Buenos_Aires' }).replace(/^[0:]*/, '');
-  
+  console.log(loadSchedule(homeTeamName));
   const contenidoPartido = `
     <div class="team">
       <img src="../images/${homeTeamName.replace(/ /g, "")}.png" class="team-logo">
