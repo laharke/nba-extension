@@ -1,6 +1,6 @@
 //Api Url
 const apiUrl = "https://www.balldontlie.io/api/v1/games?dates[]=";
-const apiEspn = "https://site.api.espn.com/apis/site/v2/sports/basketball/nba/"
+const endpoint = 'https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard';
 
 //Funcion ON LOAD
 document.addEventListener('DOMContentLoaded', function () {
@@ -9,6 +9,8 @@ document.addEventListener('DOMContentLoaded', function () {
     let date = getDate()
     //Llamamos a loadGames, funcion main()
     loadGames(date);
+    
+    
 });
 
 //Loopear todos los botones.
@@ -33,21 +35,22 @@ function loadGames(date){
       document.querySelector('.basketball').style.display = 'none';
       //Vamos creando cada template de cada partido
       for (const partido of data.data) {
-        console.log(data.data);
         generarPartido(partido);
       }
+      //Api call para conseguir el horario en ESPN.
+      setHorarios();
       
     })
     .catch(error => console.error('Fetch error:', error));
 }
 
-//Funcion que carga los HORARIOS DE LOS PARTIDOS, recibe un equipo
+//Funcion que carga los HORARIOS E LOS PARTIDOS, recibe un equipo
 // Endpoint para obtener los horarios de los partidos de la NBA
-const endpoint = 'https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard';
+
 
 // Hacer la solicitud a la API
 
-function loadSchedule(team){
+function setHorarios(){
   fetch(`${endpoint}`, {
     method: 'GET',
     headers: {
@@ -58,10 +61,20 @@ function loadSchedule(team){
   .then(data => {
     // Acceder a la información de los partidos
     const partidos = data.events;
-    
-    
+    partidos.forEach((partido) => {
+      console.log(partido);
+      //SETEAMOS EL HORARIO CON LA API DE ESPN
+      let homeTeam = partido.name.replace(/' at '/g, " juegan en ");
+      homeTeam = partido.name.split(' juegan en ')[1].replace(/\s/g, '');
+      
+      console.log(homeTeam);
+      if (document.querySelector(`#${homeTeam}`).innerHTML == ''){
+        document.querySelector(`#${homeTeam}`).innerHTML = partido.date
+        console.log('dale')
+      }
+    })
+
     // Procesar la información de los partidos según tus necesidades
-    console.log(partidos);
   })
   .catch(error => console.error('Error al obtener los horarios de la NBA:', error));
   
@@ -84,13 +97,15 @@ function generarPartido(partido) {
 function generarTemplatePartido(partido) {
   const homeTeamName = partido.home_team.full_name;
   const visitorTeamName = partido.visitor_team.full_name;
-
   // Crear el contenedor principal con la clase match-score-container y align-items-center
   const template = document.createElement('div');
   template.className = 'match-score-container align-items-center';
   // Crear el contenido HTML del partido
-  let horaArgentina = new Date(partido.date).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'America/Argentina/Buenos_Aires' }).replace(/^[0:]*/, '');
-  console.log(loadSchedule(homeTeamName));
+  //let horaArgentina = new Date(partido.date).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'America/Argentina/Buenos_Aires' }).replace(/^[0:]*/, '');
+  
+
+  
+
   const contenidoPartido = `
     <div class="team">
       <img src="../images/${homeTeamName.replace(/ /g, "")}.png" class="team-logo">
@@ -99,7 +114,7 @@ function generarTemplatePartido(partido) {
     </div>
     
     <div class="separator">
-    <div class="hora">${partido.time  === null ? horaArgentina: partido.time}</div>
+    <div class="hora" id="${homeTeamName.replace(/\s/g, '')}">${partido.time  === null ? '': partido.time}</div>
             <div class="" style=" 
             justify-items: center;
             flex-wrap: wrap;
