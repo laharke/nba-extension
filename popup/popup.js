@@ -64,13 +64,15 @@ function setHorarios(){
     partidos.forEach((partido) => {
       console.log(partido);
       //SETEAMOS EL HORARIO CON LA API DE ESPN
-      let homeTeam = partido.name.replace(/' at '/g, " juegan en ");
-      homeTeam = partido.name.split(' juegan en ')[1].replace(/\s/g, '');
+      let homeTeam = partido.name.replace(/ at /g, ' @ ');
       
-      console.log(homeTeam);
+      console.log(homeTeam)
+      homeTeam = homeTeam.split('@')[1].replace(/\s/g, '');
+      let horario = partido.date.split('T')[1]
+      console.log(homeTeam)
+      console.log(horario)
       if (document.querySelector(`#${homeTeam}`).innerHTML == ''){
-        document.querySelector(`#${homeTeam}`).innerHTML = partido.date
-        console.log('dale')
+        document.querySelector(`#${homeTeam}`).innerHTML = convertToArgentinaTime(horario) + 'hs.'
       }
     })
 
@@ -174,8 +176,27 @@ function formatDate(date){
   return `${year}-${month}-${day}`;
 }
 
+function convertToArgentinaTime(utcTimeString) {
+  // Extract hours and minutes from the UTC time string
+  const [hours, minutes] = utcTimeString.match(/\d+/g).map(Number);
 
+  // Create a Date object with the UTC time
+  const utcTime = new Date();
+  utcTime.setUTCHours(hours, minutes, 0, 0);
 
+  // Create a new Intl.DateTimeFormat object for Argentina time
+  const argentinaTime = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'America/Argentina/Buenos_Aires',
+    hour12: false,
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+
+  // Format the time using the Argentina time zone
+  const formattedTime = argentinaTime.format(utcTime);
+
+  return formattedTime;
+}
 // partidos = api call
 //for each partidos...
 // create div
