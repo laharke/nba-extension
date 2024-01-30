@@ -3,6 +3,7 @@ const apiUrl = "https://www.balldontlie.io/api/v1/games?dates[]=";
 const endpoint = 'https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard';
 const espnUrl = 'https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates='
 
+
 //Funcion ON LOAD
 document.addEventListener('DOMContentLoaded', function () {
       
@@ -10,6 +11,8 @@ document.addEventListener('DOMContentLoaded', function () {
     let date = getDate()
     //Llamamos a loadGames, funcion main()
     loadGames(date);
+
+  
     
 });
 
@@ -21,6 +24,7 @@ const buttons = document.querySelectorAll('.botonFecha').forEach(element => {
       //Mostramos la pelota de basket (spinner)
       document.querySelector('.basketball').style.display = 'block';
       loadGames(element.dataset.fecha);
+      
   })
 })
 
@@ -38,7 +42,6 @@ function loadGames(date){
         generarPartido(partido);
       }
       //Api call para conseguir el horario en ESPN.
-      console.log(date.split('-').join(''))
       setHorarios(date.split('-').join(''));
       
     })
@@ -67,11 +70,9 @@ function setHorarios(date){
       //SETEAMOS EL HORARIO CON LA API DE ESPN
       let homeTeam = partido.name.replace(/ at /g, ' @ ');
       
-      console.log(homeTeam)
       homeTeam = homeTeam.split('@')[1].replace(/\s/g, '');
       let horario = partido.date.split('T')[1]
-      console.log(homeTeam)
-      console.log(horario)
+
       if (document.querySelector(`#${homeTeam}`).innerHTML == ''){
         document.querySelector(`#${homeTeam}`).innerHTML = convertToArgentinaTime(horario) + 'hs.'
       }
@@ -198,6 +199,9 @@ function convertToArgentinaTime(utcTimeString) {
 
   return formattedTime;
 }
+
+
+
 // partidos = api call
 //for each partidos...
 // create div
@@ -210,3 +214,61 @@ function convertToArgentinaTime(utcTimeString) {
 //You can combine query parameters. For example: ?seasons[]=2018&team_ids[]=1 will return games for team_id 1 for the 2018-2019 season.
 
 //https://www.balldontlie.io/api/v1/games?dates[]=2024-17-01
+
+
+
+
+/*
+  TESTEO DE GET STANDINGSSSSSSSSSSSS
+  TESTEO DE GET STANDINGSSSSSSSSSSSS
+  TESTEO DE GET STANDINGSSSSSSSSSSSS
+*/
+const test = 'https://cdn.espn.com/core/nba/standings?xhr=1';
+
+//Si haces click en STANDINGS quiero que Con JS standings se borre y AYER HOY MAñana TMB, Y solo queden dos botones de EAST - WEST.
+//EL BOTON STANDINGS PASARIA A SER PARTIDOS  y lo tocas te carga el default, me seguis???
+//De momento voy a ocultar los botones y mostrar los que quiero
+
+//SI SE HACE CLICK EL OTRO BOTON DEBERIA SER ALREVES
+//TAL VEZ HAYA QUE RESETEAR EL INNER.HTML = '' EN ALGUN CASO TESTEA
+document.getElementById("standingsBoton").addEventListener('click', () => {
+  document.querySelector("#partidosBotones").style.display = 'none';
+  document.querySelector("#main-container").style.display = 'none';
+  document.querySelector("#standingsBoton").style.display = 'none';
+  
+  document.querySelector("#partidosBoton").style.display = 'block';
+  document.querySelector("#conferenciaBotones").style.display = 'block';
+
+})
+document.getElementById("partidosBoton").addEventListener('click', () => {
+  document.querySelector("#partidosBotones").style.display = 'block';
+  document.querySelector("#main-container").style.display = 'block';
+  document.querySelector("#standingsBoton").style.display = 'block';
+  
+  document.querySelector("#partidosBoton").style.display = 'none';
+  document.querySelector("#conferenciaBotones").style.display = 'none';
+
+})
+
+//Asignarle por JS la info.
+document.getElementById("standingsBoton").addEventListener('click', getStandings())
+
+//Get standings va a traer toda la info pero que reciba un parametro EXTRA para devolver east o west
+function getStandings() {
+  fetch(test)
+      .then(response => response.json())
+      .then(data => {
+        //Conference 
+        let east = data.content.standings.groups[0].standings.entries
+        let west = data.content.standings.groups[1].standings.entries
+        //Aca queda un array de length 15. 
+        //Hay que loopear la array que corresponda segun el click que se hizo
+        /* foreach equipo => 
+            let nombre = equipo.team.displayName
+            let record = equipo.stats[0].displayValue + equipo.stats[1].displayValue
+        
+        */
+         console.log(east, west)
+      })
+      .catch(error => console.error('Fetch error:', error));
+}

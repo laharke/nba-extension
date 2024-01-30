@@ -11,19 +11,33 @@
     />
     <link rel="stylesheet" href="popup.css" />
     <script type="module" defer src="popup.js"></script>
-    <title>Match Score</title>
+    <title>Nba Extension</title>
   </head>
   <body>
     <nav class="navbar navbar-dark bg-dark">
+      <div class="d-flex justify-content-around w-100">
+        <button id="standingsBoton" type="button" class="btn btn-outline-light">Standings</button>
+      </div>
+      <div class="d-flex justify-content-around w-100">
+        <button id="partidosBoton" type="button" class="btn btn-outline-light" style="display: none;">Partidos</button>
+      </div>
+    </nav>
+    <nav id='partidosBotones' class="navbar navbar-dark bg-dark">
       <div class="d-flex justify-content-around w-100">
         <button id="yesterday" type="button" class="botonFecha btn btn-outline-light">Ayer</button>
         <button id="today" type="button" class="botonFecha btn btn-outline-light">Hoy</button>
         <button id="tomorrow" type="button" class="botonFecha btn btn-outline-light">Mañana</button>
       </div>
     </nav>
+    <nav id='conferenciaBotones' class="navbar navbar-dark bg-dark" style="display: none;">
+      <div class="d-flex justify-content-around w-100">
+        <button id="east" type="button" class="botonConferencia btn btn-outline-light">East</button>
+        <button id="west" type="button" class="botonConferencia btn btn-outline-light">West</button>
+      </div>
+    </nav>
     
     
-    <hr />
+    <hr/>
 
     <div class="container mt-3">
       <div class="basketball" style="display: block">
@@ -34,6 +48,8 @@
       </div>
 
       <main id="main-container" ></main>
+
+      <standings id="standings-container"> </standings>
     </div>
   </body>
 </html>

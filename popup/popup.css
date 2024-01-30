@@ -158,3 +158,20 @@ body {
   border-color: #555555; /* Borde al hacer hover o focus en modo oscuro */
 }
 
+
+
+.botonConferencia {
+  background-color: #333333; /* Gris oscuro para el fondo del botón en modo oscuro */
+  color: #ffffff; /* Color del texto del botón en modo oscuro */
+  border: 1px solid #333333; /* Borde del botón en modo oscuro */
+}
+
+/* Hover y Focus para Botones en Modo Oscuro */
+.botonConferencia:hover,
+.botonConferencia:focus {
+  background-color: #555555; /* Gris más claro al hacer hover o focus en modo oscuro */
+  color: #ffffff; /* Color del texto al hacer hover o focus en modo oscuro */
+  border-color: #555555; /* Borde al hacer hover o focus en modo oscuro */
+}
+
+
