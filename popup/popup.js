@@ -1,6 +1,7 @@
 //Api Url
 const apiUrl = "https://www.balldontlie.io/api/v1/games?dates[]=";
 const endpoint = 'https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard';
+const espnUrl = 'https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates='
 
 //Funcion ON LOAD
 document.addEventListener('DOMContentLoaded', function () {
@@ -9,7 +10,6 @@ document.addEventListener('DOMContentLoaded', function () {
     let date = getDate()
     //Llamamos a loadGames, funcion main()
     loadGames(date);
-    
     
 });
 
@@ -38,7 +38,8 @@ function loadGames(date){
         generarPartido(partido);
       }
       //Api call para conseguir el horario en ESPN.
-      setHorarios();
+      console.log(date.split('-').join(''))
+      setHorarios(date.split('-').join(''));
       
     })
     .catch(error => console.error('Fetch error:', error));
@@ -50,8 +51,8 @@ function loadGames(date){
 
 // Hacer la solicitud a la API
 
-function setHorarios(){
-  fetch(`${endpoint}`, {
+function setHorarios(date){
+  fetch(`${espnUrl}${date}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -62,7 +63,7 @@ function setHorarios(){
     // Acceder a la información de los partidos
     const partidos = data.events;
     partidos.forEach((partido) => {
-      console.log(partido);
+      
       //SETEAMOS EL HORARIO CON LA API DE ESPN
       let homeTeam = partido.name.replace(/ at /g, ' @ ');
       
