@@ -235,9 +235,13 @@ document.getElementById("standingsBoton").addEventListener('click', () => {
   document.querySelector("#partidosBotones").style.display = 'none';
   document.querySelector("#main-container").style.display = 'none';
   document.querySelector("#standingsBoton").style.display = 'none';
+  document.querySelector('.basketball').style.display = 'block';
+  document.getElementById('bodyTabla').innerHTML = '';
   
   document.querySelector("#partidosBoton").style.display = 'block';
   document.querySelector("#conferenciaBotones").style.display = 'block';
+  document.querySelector("#standingsDiv").style.display = 'block';
+  
 
 })
 document.getElementById("partidosBoton").addEventListener('click', () => {
@@ -247,28 +251,76 @@ document.getElementById("partidosBoton").addEventListener('click', () => {
   
   document.querySelector("#partidosBoton").style.display = 'none';
   document.querySelector("#conferenciaBotones").style.display = 'none';
+  document.querySelector("#standingsDiv").style.display = 'none';
 
 })
 
 //Asignarle por JS la info.
-document.getElementById("standingsBoton").addEventListener('click', getStandings())
+document.getElementById("standingsBoton").addEventListener('click', () => {
+  
+  getStandings('west');
+})
+
+
+//ASIGNAR ON CLICKS PORQUE NOSE PUEDE EN EL HTML
+document.getElementById('west').addEventListener('click', () => {
+  document.querySelector('.basketball').style.display = 'block';
+  document.getElementById('bodyTabla').innerHTML = '';
+  getStandings('west');
+})
+
+document.getElementById('east').addEventListener('click', () => {
+  document.querySelector('.basketball').style.display = 'block';
+  document.getElementById('bodyTabla').innerHTML = '';
+  getStandings('east');
+})
+
 
 //Get standings va a traer toda la info pero que reciba un parametro EXTRA para devolver east o west
-function getStandings() {
+function getStandings(conference = 'west') {
   fetch(test)
       .then(response => response.json())
       .then(data => {
         //Conference 
-        let east = data.content.standings.groups[0].standings.entries
         let west = data.content.standings.groups[1].standings.entries
+        let east = data.content.standings.groups[0].standings.entries
+        conference = conference == 'west' ? west : east
         //Aca queda un array de length 15. 
         //Hay que loopear la array que corresponda segun el click que se hizo
         /* foreach equipo => 
             let nombre = equipo.team.displayName
             let record = equipo.stats[0].displayValue + equipo.stats[1].displayValue
-        
         */
-         console.log(east, west)
+
+        document.querySelector('.basketball').style.display = 'none';
+        //Como ya tengo cual debo loopear simplemnte loopeo y populo template
+        let bodyTabla = document.getElementById('bodyTabla');
+        console.log(bodyTabla)
+        conference.forEach(equipo => {
+          console.log(equipo)
+          let nombre = equipo.team.displayName
+          let wins = equipo.stats[0].displayValue
+          let loses = equipo.stats[1].displayValue
+          let seed = equipo.team.seed
+          console.log(equipo, nombre)
+          //Referencia al body de la tabla para appendarle las rows
+          let bodyTabla = document.querySelector('#bodyTabla')
+          let tr = generarTemplateTr(seed,nombre, wins, loses)
+          bodyTabla.appendChild(tr);
+        })
+
       })
       .catch(error => console.error('Fetch error:', error));
 }
+
+function generarTemplateTr(seed,nombre, wins, loses){
+  let tr = document.createElement("tr")
+  let template = `
+            <td>${seed}</td>
+            <td><img class="team-logo" src="/images/${nombre.replace(/\s/g, '')}.png" alt="Team 1 Logo"> ${nombre} </td>
+            <td>${wins}</td>
+            <td>${loses}</td>
+          `;
+  tr.innerHTML = template;
+  return tr;
+ }

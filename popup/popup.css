@@ -175,3 +175,32 @@ body {
 }
 
 
+
+
+/* TABLA DE STANDIGNS A VER */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  background-color: #444;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+  border-bottom: 1px solid #666;
+}
+
+th {
+  background-color: #555;
+}
+
+tr:hover {
+  background-color: #555;
+}
+
+.team-logo {
+  width: 30px; /* Adjust as needed */
+  height: auto;
+  margin-right: 10px;
+}
