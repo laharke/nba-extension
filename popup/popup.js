@@ -105,13 +105,23 @@ function generarTemplatePartido(partido) {
   const template = document.createElement('div');
   template.className = 'match-score-container align-items-center';
   // Crear el contenido HTML del partido
-  //let horaArgentina = new Date(partido.date).toLocaleTimeString('es-AR', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: 'America/Argentina/Buenos_Aires' }).replace(/^[0:]*/, '');
   
+  //Buscar si hay un winner y un loser, asi agrego un IF
+  let winner;
+  let loser;
+  if(partido.status == 'Final'){
+    if (partido.home_team_score > partido.visitor_team_score){
+      winner = homeTeamName
+      loser = visitorTeamName
+    }else{
+      winner = visitorTeamName
+      loser = homeTeamName
+    }
+  }
 
-  
 
   const contenidoPartido = `
-    <div class="team">
+    <div class="team ${winner == homeTeamName ? 'winnerTeam' : ''}  ${loser == homeTeamName ? 'loserTeam' : ''}">
       <img src="../images/${homeTeamName.replace(/ /g, "")}.png" class="team-logo">
       <span class="team-name">${homeTeamName}</span>
       <span class="team-score">${partido.home_team_score}</span>
@@ -126,7 +136,7 @@ function generarTemplatePartido(partido) {
             text-align: center;
         ">-</div>
     </div>
-    <div class="team team-second">
+    <div class="team team-second ${winner == visitorTeamName ? 'winnerTeam' : ''}  ${loser == visitorTeamName ? 'loserTeam' : ''}">
       <span class="team-score">${partido.visitor_team_score}</span>
       <span class="team-name">${visitorTeamName}</span>
       <img src="../images/${visitorTeamName.replace(/ /g, "")}.png" alt="Team 2 Logo" class="team-logo">
@@ -294,15 +304,12 @@ function getStandings(conference = 'west') {
 
         document.querySelector('.basketball').style.display = 'none';
         //Como ya tengo cual debo loopear simplemnte loopeo y populo template
-        let bodyTabla = document.getElementById('bodyTabla');
-        console.log(bodyTabla)
+
         conference.forEach(equipo => {
-          console.log(equipo)
           let nombre = equipo.team.displayName
           let wins = equipo.stats[0].displayValue
           let loses = equipo.stats[1].displayValue
           let seed = equipo.team.seed
-          console.log(equipo, nombre)
           //Referencia al body de la tabla para appendarle las rows
           let bodyTabla = document.querySelector('#bodyTabla')
           let tr = generarTemplateTr(seed,nombre, wins, loses)
@@ -317,10 +324,26 @@ function generarTemplateTr(seed,nombre, wins, loses){
   let tr = document.createElement("tr")
   let template = `
             <td>${seed}</td>
-            <td><img class="team-logo" src="/images/${nombre.replace(/\s/g, '')}.png" alt="Team 1 Logo"> ${nombre} </td>
+            <td><img class="team-logo" src="/images/${nombre.replace(/\s/g, '')}.png" alt="Team Logo"> ${nombre} </td>
             <td>${wins}</td>
             <td>${loses}</td>
           `;
   tr.innerHTML = template;
   return tr;
- }
+}
+
+
+/*
+
+  FUNCION PARA PINTAR LOS PARTIDOS SEGUN GANADOR O PERDEDOR.
+  Creo que lo que haria es llamar esto POST partidos cargados obviamente.
+  Agarro todos los nodes con la clase del partido. 
+  O creo que me convendria agarrar los SEPARATOR, y if inner.html == Final
+  y de ahi em voy al parent y agarro los dos hcild que necesito
+
+*/
+
+function pintarPartidos(){
+
+
+}
