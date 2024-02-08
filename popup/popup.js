@@ -37,8 +37,12 @@ function loadGames(date){
     .then(data => {
       //Borramos la pelota de basket (spinner)
       document.querySelector('.basketball').style.display = 'none';
+      
+      //Ordenamos los partidos por fechas 
+      const partidos =  data.data.sort(ordenarPorFecha);
+
       //Vamos creando cada template de cada partido
-      for (const partido of data.data) {
+      for (const partido of partidos) {
         generarPartido(partido);
       }
       //Api call para conseguir el horario en ESPN.
@@ -66,7 +70,6 @@ function setHorarios(date){
     // Acceder a la información de los partidos
     const partidos = data.events;
     partidos.forEach((partido) => {
-      
       //SETEAMOS EL HORARIO CON LA API DE ESPN
       let homeTeam = partido.name.replace(/ at /g, ' @ ');
       
@@ -83,7 +86,10 @@ function setHorarios(date){
   .catch(error => console.error('Error al obtener los horarios de la NBA:', error));
   
 }
-
+//Comparar fechas de los partidos
+function ordenarPorFecha(a, b) {
+  return new Date(a.status) - new Date(b.status);
+}
 //Funcion que genera el partido y su divisor y lo appendea al div de partidos.
 function generarPartido(partido) {
 
