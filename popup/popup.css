@@ -26,6 +26,7 @@ body {
   background-color: #1e1e1e; /* Fondo del contenedor en modo oscuro */
   border: 1px solid #444;
   max-width: 600px; /* Ajusta según sea necesario sacar? */
+  width: 500px;
 }
   
 .team {
