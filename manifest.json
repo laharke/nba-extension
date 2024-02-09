@@ -1,7 +1,7 @@
 {
     "manifest_version": 3,
     "name": "Nba Extension",
-    "version": "0.1",
+    "version": "1.0",
     "action": {
       "default_icon": "images/nba-2-icon.png",
       "default_popup": "popup/popup.html" 
