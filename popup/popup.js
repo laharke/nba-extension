@@ -1,8 +1,8 @@
 //Api Url
-const apiUrl = "https://www.balldontlie.io/api/v1/games?dates[]=";
+const apiUrl = "https://api.balldontlie.io/v1/games?dates[]=";
+const apiKey = '3552b2b0-cdd0-4066-a9f8-2590ade8f0df'
 const endpoint = 'https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard';
 const espnUrl = 'https://site.api.espn.com/apis/site/v2/sports/basketball/nba/scoreboard?dates='
-
 
 //Funcion ON LOAD
 document.addEventListener('DOMContentLoaded', function () {
@@ -28,11 +28,14 @@ const buttons = document.querySelectorAll('.botonFecha').forEach(element => {
   })
 })
 
-
-
 //Funcion que carga los partidos, recibe como parametro una fecha
 function loadGames(date){
-  fetch(apiUrl+date)
+  fetch(apiUrl+date, {
+    method: "GET",
+    headers:{
+      "Authorization": "3552b2b0-cdd0-4066-a9f8-2590ade8f0df"
+    },
+  })
     .then(response => response.json())
     .then(data => {
       //Borramos la pelota de basket (spinner)
@@ -59,12 +62,7 @@ function loadGames(date){
 // Hacer la solicitud a la API
 
 function setHorarios(date){
-  fetch(`${espnUrl}${date}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  })
+  fetch(`${espnUrl}${date}`)
   .then(response => response.json())
   .then(data => {
     // Acceder a la información de los partidos
@@ -239,7 +237,7 @@ function convertToArgentinaTime(utcTimeString) {
   TESTEO DE GET STANDINGSSSSSSSSSSSS
   TESTEO DE GET STANDINGSSSSSSSSSSSS
 */
-const test = 'https://cdn.espn.com/core/nba/standings?xhr=1';
+const espnApiStandings = 'https://cdn.espn.com/core/nba/standings?xhr=1';
 
 //Si haces click en STANDINGS quiero que Con JS standings se borre y AYER HOY MAñana TMB, Y solo queden dos botones de EAST - WEST.
 //EL BOTON STANDINGS PASARIA A SER PARTIDOS  y lo tocas te carga el default, me seguis???
@@ -294,7 +292,7 @@ document.getElementById('east').addEventListener('click', () => {
 
 //Get standings va a traer toda la info pero que reciba un parametro EXTRA para devolver east o west
 function getStandings(conference = 'west') {
-  fetch(test)
+  fetch(espnApiStandings)
       .then(response => response.json())
       .then(data => {
         //Conference 
@@ -336,20 +334,4 @@ function generarTemplateTr(seed,nombre, wins, loses){
           `;
   tr.innerHTML = template;
   return tr;
-}
-
-
-/*
-
-  FUNCION PARA PINTAR LOS PARTIDOS SEGUN GANADOR O PERDEDOR.
-  Creo que lo que haria es llamar esto POST partidos cargados obviamente.
-  Agarro todos los nodes con la clase del partido. 
-  O creo que me convendria agarrar los SEPARATOR, y if inner.html == Final
-  y de ahi em voy al parent y agarro los dos hcild que necesito
-
-*/
-
-function pintarPartidos(){
-
-
 }
