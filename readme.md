@@ -35,6 +35,7 @@ It also features an up-to-date NBA standings section, all with near real-time up
 ![image](https://github.com/user-attachments/assets/ad99177f-f3f1-43b7-961a-6e7b61ac567e)
 
 **Standings**
+
 ![image](https://github.com/user-attachments/assets/5076b1bb-4717-470a-b3e8-434b23e4a733)
 
 ## Technologies Used
